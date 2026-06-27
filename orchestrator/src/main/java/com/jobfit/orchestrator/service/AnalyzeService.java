@@ -2,7 +2,7 @@ package com.jobfit.orchestrator.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jobfit.orchestrator.dto.AnalyzeRequest;
+
 import com.jobfit.orchestrator.dto.AnalyzeResponse;
 import com.jobfit.orchestrator.entity.Application;
 import com.jobfit.orchestrator.repository.ApplicationRepository;
@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
+
+import java.util.Map;
 
 @Service
 public class AnalyzeService {
@@ -41,7 +43,10 @@ public class AnalyzeService {
         AnalyzeResponse response = restClient.post()
                 .uri("/analyze")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new AnalyzeRequest(app.getResumeText(), app.getJdText()))
+                .body(Map.of(
+                        "resume_text", app.getResumeText(),
+                        "jd_text", app.getJdText()
+                ))
                 .retrieve()
                 .body(AnalyzeResponse.class);
 
