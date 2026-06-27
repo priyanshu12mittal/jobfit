@@ -1,5 +1,12 @@
 from pydantic import BaseModel, Field
 
+MAX_INPUT_CHARS = 15_000
+
+
+class AnalyzeRequest(BaseModel):
+    resume_text: str = Field(min_length=50, max_length=MAX_INPUT_CHARS)
+    jd_text: str = Field(min_length=50, max_length=MAX_INPUT_CHARS)
+
 
 class AnalysisResult(BaseModel):
     fit_score: int = Field(ge=0, le=100, description="0-100 match score")
