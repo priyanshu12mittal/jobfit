@@ -1,0 +1,35 @@
+# === Python (ai-service) ===
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+*.egg
+dist/
+build/
+
+# === Java (orchestrator) ===
+*.class
+*.jar
+*.war
+build/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# === Node.js (frontend) ===
+node_modules/
+.next/
+out/
+
+# === Environment / secrets ===
+.env
+.env.*
+!.env.example
+
+# === IDE ===
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
