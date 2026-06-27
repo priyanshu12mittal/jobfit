@@ -1,13 +1,42 @@
-from fastapi import FastAPI
-from google.genai import types
+import logging
 
-from llm import gemini_client
-from models import AnalysisResult, AnalyzeRequest
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from google.genai import errors as genai_errors
+from pydantic import ValidationError
+
+from analyzer import call_gemini
+from models import AnalyzeRequest
 from prompts import ANALYZE_PROMPT
+
+logging.basicConfig(level=logging.INFO)
 
 app = FastAPI(title="JobFit AI Service")
 
 MODEL = "gemini-2.5-flash"
+
+
+@app.exception_handler(genai_errors.APIError)
+def handle_gemini_error(_request: Request, exc: genai_errors.APIError):
+    if exc.code == 429:
+        return JSONResponse(
+            status_code=429,
+            content={"error": "Rate limit exceeded. Please try again later."},
+        )
+    logging.getLogger(__name__).error("Gemini API error: %s", exc)
+    return JSONResponse(
+        status_code=502,
+        content={"error": "AI service temporarily unavailable."},
+    )
+
+
+@app.exception_handler(ValidationError)
+def handle_parse_error(_request: Request, exc: ValidationError):
+    logging.getLogger(__name__).error("Failed to parse model response: %s", exc)
+    return JSONResponse(
+        status_code=502,
+        content={"error": "AI returned an unparseable response. Please retry."},
+    )
 
 
 @app.get("/health")
@@ -21,16 +50,4 @@ def analyze(request: AnalyzeRequest):
         resume_text=request.resume_text,
         jd_text=request.jd_text,
     )
-
-    response = gemini_client.models.generate_content(
-        model=MODEL,
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json",
-            response_schema=AnalysisResult,
-        ),
-    )
-
-    result = AnalysisResult.model_validate_json(response.text)
-    return result
-
+    return call_gemini(prompt, MODEL)
