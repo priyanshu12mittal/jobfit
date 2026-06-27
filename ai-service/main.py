@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Body
+from google.genai import types
 
 from llm import gemini_client
+from models import AnalysisResult
 from prompts import ANALYZE_PROMPT
 
 app = FastAPI(title="JobFit AI Service")
@@ -23,6 +25,11 @@ def analyze(
     response = gemini_client.models.generate_content(
         model=MODEL,
         contents=prompt,
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json",
+            response_schema=AnalysisResult,
+        ),
     )
 
-    return {"raw_response": response.text}
+    result = AnalysisResult.model_validate_json(response.text)
+    return result
