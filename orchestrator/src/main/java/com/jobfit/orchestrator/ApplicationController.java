@@ -1,8 +1,10 @@
 package com.jobfit.orchestrator;
 
+import com.jobfit.orchestrator.dto.AnalyzeResponse;
 import com.jobfit.orchestrator.dto.ApplicationResponse;
 import com.jobfit.orchestrator.dto.CreateApplicationRequest;
 import com.jobfit.orchestrator.dto.UpdateApplicationRequest;
+import com.jobfit.orchestrator.service.AnalyzeService;
 import com.jobfit.orchestrator.service.ApplicationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -15,9 +17,11 @@ import java.util.List;
 public class ApplicationController {
 
     private final ApplicationService service;
+    private final AnalyzeService analyzeService;
 
-    public ApplicationController(ApplicationService service) {
+    public ApplicationController(ApplicationService service, AnalyzeService analyzeService) {
         this.service = service;
+        this.analyzeService = analyzeService;
     }
 
     @PostMapping
@@ -47,5 +51,10 @@ public class ApplicationController {
             @RequestBody UpdateApplicationRequest request
     ) {
         return ApplicationResponse.from(service.update(id, request));
+    }
+
+    @PostMapping("/{id}/analyze")
+    public AnalyzeResponse analyze(@PathVariable Long id) {
+        return analyzeService.analyzeApplication(id);
     }
 }

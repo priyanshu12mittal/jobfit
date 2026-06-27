@@ -10,3 +10,6 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
+
+ai-service:
+  base-url: ${AI_SERVICE_URL:http://localhost:8000}
