@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef, useTransition } from 'react';
+import Link from 'next/link';
 import VerdictModal from './VerdictModal';
 import AddApplicationModal from './AddApplicationModal';
 
@@ -12,6 +13,7 @@ export type Application = {
   fitScore: number | null;
   analysisJson?: string;
   createdAt: string;
+  _dragging?: boolean;
 };
 
 const USER_ID = '1';
@@ -22,8 +24,6 @@ const COLUMNS = [
   { key: 'INTERVIEW', label: 'Interview' },
   { key: 'OFFER',     label: 'Offer'     },
 ] as const;
-
-type ColKey = typeof COLUMNS[number]['key'];
 
 const BADGE_STATUS: Record<string, string> = {
   SAVED:     'Pending',
@@ -66,7 +66,6 @@ export default function Dashboard() {
   const [qResume, setQResume] = useState('');
   const [qJd, setQJd] = useState('');
   const [qAnalyzing, setQAnalyzing] = useState(false);
-  const [qResult, setQResult] = useState<Application | null>(null);
 
   // Drag state
   const dragAppId = useRef<number | null>(null);
@@ -120,7 +119,6 @@ export default function Dashboard() {
       const analyzed: Application = await analyzeRes.json();
 
       setApps(prev => [...prev, analyzed]);
-      setQResult(analyzed);
       setSelectedApp(analyzed);
       setQResume(''); setQJd('');
     } catch (e) {
@@ -151,14 +149,14 @@ export default function Dashboard() {
     e.dataTransfer.effectAllowed = 'move';
     // Slight delay so the ghost doesn't show the dim state immediately
     setTimeout(() => {
-      setApps(prev => prev.map(a => a.id === appId ? { ...a, _dragging: true } as any : a));
+      setApps(prev => prev.map(a => a.id === appId ? { ...a, _dragging: true } : a));
     }, 0);
   };
 
   const onDragEnd = () => {
     dragAppId.current = null;
     setDragOver(null);
-    setApps(prev => prev.map(a => ({ ...a, _dragging: false } as any)));
+    setApps(prev => prev.map(a => ({ ...a, _dragging: false })));
   };
 
   const onDragOver = (e: React.DragEvent, colKey: string) => {
@@ -226,7 +224,7 @@ export default function Dashboard() {
           <div className="header-logo">JOBFIT</div>
 
           <nav className="header-nav">
-            <a href="/" className="active">Dashboard</a>
+            <Link href="/" className="active">Dashboard</Link>
             <a href="#">History</a>
             <a href="#">Archive</a>
           </nav>
@@ -325,7 +323,7 @@ export default function Dashboard() {
 
                   {colApps.map(app => {
                     const isAnalyzing = analyzingIds.has(app.id);
-                    const isDragging = (app as any)._dragging;
+                    const isDragging = app._dragging;
 
                     return (
                       <div

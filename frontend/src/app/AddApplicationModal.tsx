@@ -28,7 +28,7 @@ export default function AddApplicationModal({ onClose, onSuccess }: Props) {
       });
       if (!r.ok) throw new Error('Failed to create application');
       await onSuccess();
-    } catch (e: any) { setErr(e.message ?? 'Something went wrong.'); }
+    } catch (e: unknown) { setErr(e instanceof Error ? e.message : 'Something went wrong.'); }
     finally { setSaving(false); }
   };
 
