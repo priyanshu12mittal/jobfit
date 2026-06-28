@@ -1,41 +1,58 @@
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap');
 
-/* ─── Design Tokens ─────────────────────────────────────────── */
+/* ─── Palette (canonical) ───────────────────────────────────────
+   Marquee  #7A2331  – deep cinema red     → primary actions, stamp
+   Stub     #E8DEC8  – aged ticket cream   → PAGE BACKGROUND
+   Brass    #B8932F  – aged ticket gold    → accents, stamp borders
+   Ink      #221F1D  – near-black charcoal → text, darkest surfaces
+   Reel     #3C3835  – secondary dark      → cards, header
+   Moss     #6E7A52  – muted green         → positive / passed states
+   ────────────────────────────────────────────────────────────── */
 :root {
-  /* Surfaces */
-  --bg-base:       #1e1c18;
-  --bg-page:       #27241e;
-  --bg-column:     #201e1a;
-  --bg-card:       #2e2b25;
-  --bg-card-hover: #353028;
-  --bg-header:     #151310;
+  --marquee: #7A2331;
+  --marquee-dim: #5c0b1c;
+  --marquee-hover: #8a2b3c;
 
-  /* Text */
-  --text-primary:   #e8dfc8;
-  --text-secondary: #9e9589;
-  --text-muted:     #5e5a53;
-  --text-ink:       #1a1815;
+  --stub: #E8DEC8;
+  --stub-dim: #ddd3b2;       /* slightly darker for hover/accents on cream */
+  --stub-bright: #f4ede0;    /* lighter for card header on dark bg */
 
-  /* Accents */
-  --accent-brass:   #c9a84c;
-  --accent-red:     #7a2331;
-  --accent-red-dim: #4a1520;
-  --accent-green:   #6e7a52;
-  --accent-green-bg:#2a3020;
+  --brass: #B8932F;
+  --brass-dim: rgba(184, 147, 47, 0.25);
 
-  /* Borders */
-  --border-card:    rgba(232, 223, 200, 0.08);
-  --border-column:  rgba(232, 223, 200, 0.06);
-  --border-dashed:  rgba(201, 168, 76, 0.3);
+  --ink: #221F1D;
+  --ink-muted: rgba(34, 31, 29, 0.55);
+  --ink-faint: rgba(34, 31, 29, 0.12);
 
-  /* Fonts */
+  --reel: #3C3835;
+  --reel-hover: #454038;
+
+  --moss: #6E7A52;
+  --moss-dim: rgba(110, 122, 82, 0.2);
+
+  /* Semantic aliases */
+  --color-bg:          var(--stub);        /* page bg */
+  --color-surface:     var(--stub-bright); /* form fields, light panels */
+  --color-card:        var(--reel);        /* ticket cards */
+  --color-header:      var(--ink);         /* top nav */
+  --color-primary:     var(--marquee);
+  --color-on-primary:  var(--stub);        /* text on red */
+  --color-on-card:     var(--stub);        /* text on dark cards */
+  --color-on-card-dim: rgba(232, 222, 200, 0.55);
+  --color-text:        var(--ink);         /* body text on cream */
+  --color-text-muted:  var(--ink-muted);
+  --color-accent:      var(--brass);
+  --color-positive:    var(--moss);
+  --color-error:       #ba1a1a;
+
+  /* Typography */
   --font-display:  'Instrument Serif', serif;
   --font-body:     'Inter', sans-serif;
   --font-utility:  'JetBrains Mono', monospace;
 
   /* Spacing */
-  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px;
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
   --s5: 20px; --s6: 24px; --s8: 32px; --s10: 40px;
 }
 
@@ -45,8 +62,10 @@
 body {
   margin: 0; padding: 0;
   font-family: var(--font-body);
-  background-color: var(--bg-page);
-  color: var(--text-primary);
+  /* Stub cream with subtle paper grain */
+  background-color: var(--stub);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+  color: var(--ink);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
@@ -63,15 +82,16 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
   vertical-align: middle;
 }
 
-/* ─── Scrollbar ───────────────────────────────────────────────── */
+/* ─── Scrollbar ──────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-base); }
-::-webkit-scrollbar-thumb { background: #3a3630; border-radius: 3px; }
+::-webkit-scrollbar-track { background: var(--stub-dim); }
+::-webkit-scrollbar-thumb { background: var(--reel); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink); }
 
-/* ─── Header ─────────────────────────────────────────────────── */
+/* ─── Header (Ink dark, Stub text) ──────────────────────────── */
 .app-header {
-  background-color: var(--bg-header);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background-color: var(--ink);
+  border-bottom: 2px solid var(--reel);
   padding: 0 var(--s8);
   height: 52px;
   display: flex;
@@ -90,12 +110,13 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
   gap: var(--s8);
 }
 
+/* JOBFIT wordmark: Stub text in a Brass-bordered box on Ink bg */
 .header-logo {
   font-family: var(--font-display);
   font-size: 22px;
-  color: var(--text-primary);
-  letter-spacing: 0.04em;
-  border: 1px solid rgba(232,223,200,0.2);
+  color: var(--stub);
+  letter-spacing: 0.06em;
+  border: 1px solid var(--brass);
   padding: 2px 10px;
   flex-shrink: 0;
 }
@@ -112,7 +133,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-secondary);
+  color: rgba(232, 222, 200, 0.5);
   text-decoration: none;
   padding-bottom: 2px;
   border-bottom: 1px solid transparent;
@@ -120,7 +141,10 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
 }
 
 .header-nav a.active,
-.header-nav a:hover { color: var(--text-primary); border-bottom-color: var(--accent-brass); }
+.header-nav a:hover {
+  color: var(--stub);
+  border-bottom-color: var(--brass);
+}
 
 .header-right {
   display: flex;
@@ -128,76 +152,88 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
   gap: var(--s3);
 }
 
+/* "NOW SHOWING: N applications" badge */
 .now-showing-badge {
   font-family: var(--font-utility);
   font-size: 10px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-secondary);
+  color: rgba(232, 222, 200, 0.45);
   white-space: nowrap;
 }
 
-.now-showing-badge strong { color: var(--text-primary); }
+.now-showing-badge strong {
+  color: var(--stub);
+}
 
+/* Icon buttons on dark header */
 .icon-btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 32px; height: 32px;
-  border: 1px solid rgba(232,223,200,0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(232, 222, 200, 0.2);
   background: transparent;
-  color: var(--text-primary);
+  color: var(--stub);
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
-  font-size: 0;
 }
 
-.icon-btn:hover { border-color: var(--accent-brass); background: rgba(201,168,76,0.08); }
+.icon-btn:hover {
+  border-color: var(--brass);
+  background: rgba(184, 147, 47, 0.1);
+}
 
+/* The "+" add button uses Marquee red on Ink header */
 .icon-btn-add {
-  background-color: var(--accent-red);
-  border-color: var(--accent-red);
-  color: white;
+  background-color: var(--marquee);
+  border-color: var(--marquee);
+  color: var(--stub);
 }
 
-.icon-btn-add:hover { background-color: #8a2b3c; border-color: #8a2b3c; }
+.icon-btn-add:hover {
+  background-color: var(--marquee-hover);
+  border-color: var(--marquee-hover);
+}
 
-/* ─── Page Body ──────────────────────────────────────────────── */
+/* ─── Page body (Stub cream background) ──────────────────────── */
 .page-body {
   max-width: 1400px;
   margin: 0 auto;
   padding: var(--s8);
 }
 
-/* ─── Section Divider ────────────────────────────────────────── */
+/* ─── Section helpers ────────────────────────────────────────── */
 .section-rule {
   border: none;
-  border-top: 1px solid rgba(232,223,200,0.1);
+  border-top: 1px solid var(--ink-faint);
   margin: var(--s8) 0;
 }
 
-/* ─── Section Title ──────────────────────────────────────────── */
 .section-title {
   display: flex;
   align-items: center;
   gap: var(--s3);
-  margin-bottom: var(--s6);
+  margin-bottom: var(--s5);
 }
 
-.section-title-icon {
-  color: var(--accent-red);
-}
+.section-title-icon { color: var(--marquee); }
 
+/* Section title text uses Ink on Stub bg */
 .section-title h2 {
   font-family: var(--font-utility);
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-primary);
+  letter-spacing: 0.14em;
+  color: var(--ink);
 }
 
 /* ─── Quick Verdict Panel ────────────────────────────────────── */
+/* Light Stub surface, Ink border — like a form printed on paper */
 .verdict-panel {
-  border: 1px solid var(--border-card);
-  background-color: rgba(255,255,255,0.015);
+  border: 1px solid var(--ink-faint);
+  background-color: rgba(34, 31, 29, 0.03);
   padding: var(--s6);
 }
 
@@ -208,23 +244,27 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
   margin-bottom: var(--s6);
 }
 
-@media (max-width: 600px) { .verdict-panel-grid { grid-template-columns: 1fr; } }
+@media (max-width: 600px) {
+  .verdict-panel-grid { grid-template-columns: 1fr; }
+}
 
+/* Labels in Ink/utility font — government-form style */
 .verdict-field-label {
   font-family: var(--font-utility);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--text-secondary);
+  color: var(--ink-muted);
   margin-bottom: var(--s2);
 }
 
+/* Textareas: no border except a heavy bottom Ink line */
 .verdict-textarea {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(232,223,200,0.15);
-  color: var(--text-primary);
+  border-bottom: 2px solid var(--ink-faint);
+  color: var(--ink);
   font-family: var(--font-body);
   font-size: 13px;
   resize: none;
@@ -235,34 +275,41 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
   transition: border-color 0.15s;
 }
 
-.verdict-textarea::placeholder { color: var(--text-muted); font-style: italic; }
-.verdict-textarea:focus { border-bottom-color: rgba(232,223,200,0.4); }
+.verdict-textarea::placeholder {
+  color: var(--ink-muted);
+  font-style: italic;
+}
 
+.verdict-textarea:focus {
+  border-bottom-color: var(--ink);
+}
+
+/* Marquee red Analyze button */
 .analyze-btn {
   display: block;
   width: 100%;
-  max-width: 320px;
+  max-width: 300px;
   margin: 0 auto;
   padding: var(--s4) var(--s8);
-  background-color: var(--accent-red);
-  color: var(--text-primary);
-  border: 1px solid rgba(232,223,200,0.1);
+  background-color: var(--marquee);
+  color: var(--stub);
+  border: 1px solid rgba(34, 31, 29, 0.15);
   font-family: var(--font-utility);
-  font-size: 13px;
-  letter-spacing: 0.12em;
+  font-size: 12px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   cursor: pointer;
   transition: background 0.15s, transform 0.1s;
 }
 
-.analyze-btn:hover { background-color: #8a2b3c; }
+.analyze-btn:hover { background-color: var(--marquee-hover); }
 .analyze-btn:active { transform: translateY(1px); }
 .analyze-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* ─── Marquee Board ──────────────────────────────────────────── */
+/* ─── Marquee Board shell ────────────────────────────────────── */
+/* Board border uses Ink; columns are separated by Ink dividers */
 .marquee-board {
-  border: 1px solid var(--border-column);
-  background-color: var(--bg-base);
+  border: 1px solid var(--ink-faint);
   overflow: hidden;
 }
 
@@ -274,19 +321,20 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
 @media (max-width: 900px) { .board-columns { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 500px) { .board-columns { grid-template-columns: 1fr; } }
 
-/* ─── Column ─────────────────────────────────────────────────── */
+/* ─── Board column (Stub bg inside board) ────────────────────── */
 .board-column {
-  border-right: 1px solid var(--border-column);
+  border-right: 1px solid var(--ink-faint);
   padding: var(--s5);
-  min-height: 400px;
+  min-height: 420px;
+  background-color: transparent; /* shows page Stub through */
   transition: background 0.15s;
 }
 
 .board-column:last-child { border-right: none; }
 
+/* Drag-over: a very subtle Brass tint on the cream */
 .board-column.drag-over {
-  background-color: rgba(201,168,76,0.04);
-  border-right-color: rgba(201,168,76,0.2);
+  background-color: rgba(184, 147, 47, 0.07);
 }
 
 .col-header {
@@ -296,33 +344,40 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
   margin-bottom: var(--s5);
 }
 
+/* Column title: Ink utility monospace on Stub bg */
 .col-title {
   font-family: var(--font-utility);
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--text-secondary);
+  color: var(--ink-muted);
 }
 
+/* Count badge: small Ink-bordered square */
 .col-count {
-  width: 22px; height: 22px;
-  border: 1px solid var(--border-card);
-  display: flex; align-items: center; justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--ink-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-utility);
   font-size: 11px;
-  color: var(--text-secondary);
+  color: var(--ink);
 }
 
 .col-count.empty {
   border-style: dashed;
-  opacity: 0.4;
-  border-color: rgba(232,223,200,0.2);
+  color: var(--ink-muted);
+  opacity: 0.5;
 }
 
-/* ─── Ticket Card ────────────────────────────────────────────── */
+/* ─── Ticket Card (Reel dark on Stub cream) ──────────────────── */
 .ticket {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-card);
+  background-color: var(--reel);
+  border: 1px solid rgba(34, 31, 29, 0.35);
+  /* Mechanical depth shadow — offset only, no blur */
+  box-shadow: 2px 2px 0 var(--ink);
   padding: var(--s4);
   margin-bottom: var(--s3);
   cursor: grab;
@@ -333,44 +388,32 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
 }
 
 .ticket:hover {
-  background-color: var(--bg-card-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  background-color: var(--reel-hover);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
 }
 
 .ticket.dragging {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: grabbing;
+  transform: rotate(1.5deg);
+  box-shadow: 4px 4px 0 var(--ink);
 }
 
-/* Dashed perforation strip */
+/* Perforated dashed line — Brass color, evokes ticket stub */
 .ticket-perf {
   display: flex;
   align-items: center;
-  gap: 0;
   margin: var(--s3) 0;
-  height: 8px;
-  position: relative;
-}
-
-.ticket-perf::before, .ticket-perf::after {
-  content: '';
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background-color: var(--bg-base);
-  border: 1px solid rgba(232,223,200,0.1);
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
 }
 
 .ticket-perf-line {
   flex: 1;
   height: 0;
-  border-top: 2px dashed var(--border-dashed);
+  border-top: 2px dashed rgba(184, 147, 47, 0.35);
 }
 
-/* Card meta row */
+/* Card meta: REQ-ID in Brass, badge in the appropriate accent */
 .ticket-meta {
   display: flex;
   justify-content: space-between;
@@ -381,11 +424,11 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
 .ticket-id {
   font-family: var(--font-utility);
   font-size: 10px;
-  color: var(--accent-brass);
-  letter-spacing: 0.05em;
+  color: var(--brass);
+  letter-spacing: 0.06em;
 }
 
-/* Status badge */
+/* Status badges on dark Reel card */
 .status-badge {
   font-family: var(--font-utility);
   font-size: 9px;
@@ -395,27 +438,55 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
   border: 1px solid;
 }
 
-.badge-pending  { color: var(--accent-brass);  border-color: rgba(201,168,76,0.4);  background: rgba(201,168,76,0.08); }
-.badge-passed   { color: #8ab870;               border-color: rgba(138,184,112,0.4); background: rgba(138,184,112,0.08); }
-.badge-active   { color: #7ab8e8;               border-color: rgba(122,184,232,0.4); background: rgba(122,184,232,0.08); }
-.badge-offer    { color: #d4a0d8;               border-color: rgba(212,160,216,0.4); background: rgba(212,160,216,0.08); }
+/* Pending → Brass accent on Reel bg */
+.badge-pending {
+  color: var(--brass);
+  border-color: rgba(184, 147, 47, 0.5);
+  background: rgba(184, 147, 47, 0.1);
+}
 
-/* Card body */
+/* Passed → Moss green */
+.badge-passed {
+  color: var(--moss);
+  border-color: rgba(110, 122, 82, 0.5);
+  background: rgba(110, 122, 82, 0.12);
+}
+
+/* Active → lighter Stub tint */
+.badge-active {
+  color: var(--stub);
+  border-color: rgba(232, 222, 200, 0.3);
+  background: rgba(232, 222, 200, 0.08);
+}
+
+/* Offer → Moss (positive) */
+.badge-offer {
+  color: var(--moss);
+  border-color: rgba(110, 122, 82, 0.5);
+  background: rgba(110, 122, 82, 0.12);
+}
+
+/* Fit score chip — Marquee red */
+.badge-scored {
+  color: #ff9aa2;
+  border-color: rgba(122, 35, 49, 0.6);
+  background: rgba(122, 35, 49, 0.2);
+}
+
+/* Card role: Stub cream display text on Reel dark card */
 .ticket-role {
   font-family: var(--font-display);
   font-size: 22px;
   line-height: 1.1;
-  color: var(--text-primary);
+  color: var(--stub);
   margin-bottom: 4px;
 }
 
 .ticket-company {
-  font-family: var(--font-body);
   font-size: 12px;
-  color: var(--text-secondary);
+  color: var(--color-on-card-dim);
 }
 
-/* Card footer */
 .ticket-footer {
   display: flex;
   justify-content: space-between;
@@ -425,27 +496,36 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
 .ticket-date {
   font-family: var(--font-utility);
   font-size: 10px;
-  color: var(--text-muted);
+  color: rgba(232, 222, 200, 0.35);
 }
 
+/* Review/Details text-link on dark card — dashed underline, Stub muted */
 .ticket-action-btn {
   font-family: var(--font-utility);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--text-secondary);
+  color: rgba(232, 222, 200, 0.45);
   background: transparent;
   border: none;
   cursor: pointer;
   padding: 2px 0;
-  border-bottom: 1px dashed rgba(232,223,200,0.2);
+  border-bottom: 1px dashed rgba(232, 222, 200, 0.2);
   transition: color 0.15s, border-color 0.15s;
 }
 
-.ticket-action-btn:hover { color: var(--text-primary); border-bottom-color: var(--text-primary); }
-.ticket-action-btn.analyzing { color: var(--accent-brass); }
+.ticket-action-btn:hover {
+  color: var(--stub);
+  border-bottom-color: var(--stub);
+}
 
-/* Certified Match stamp */
+.ticket-action-btn.analyzing {
+  color: var(--brass);
+  border-bottom-color: transparent;
+  cursor: default;
+}
+
+/* ─── "Certified Match" stamp (Marquee red, rotated) ─────────── */
 .cert-stamp {
   position: absolute;
   top: 50%;
@@ -454,26 +534,19 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
   pointer-events: none;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 18px;
-  color: rgba(122, 35, 49, 0.85);
-  border: 2px solid rgba(122, 35, 49, 0.6);
-  padding: 4px 12px;
+  font-size: 16px;
+  color: rgba(122, 35, 49, 0.9);
+  border: 2px solid rgba(122, 35, 49, 0.65);
+  padding: 4px 10px;
   white-space: nowrap;
   letter-spacing: 0.04em;
+  background: rgba(232, 222, 200, 0.06);
   animation: stampIn 0.35s cubic-bezier(0.25, 1, 0.5, 1) both;
 }
 
 @keyframes stampIn {
   from { transform: translate(-50%, -50%) rotate(-8deg) scale(1.8); opacity: 0; }
   to   { transform: translate(-50%, -50%) rotate(-8deg) scale(1);   opacity: 1; }
-}
-
-/* Fit score on card */
-.ticket-score {
-  font-family: var(--font-utility);
-  font-size: 10px;
-  color: var(--accent-red);
-  letter-spacing: 0.05em;
 }
 
 /* ─── Empty Column ───────────────────────────────────────────── */
@@ -488,14 +561,17 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
   text-align: center;
 }
 
-.col-empty-icon { font-size: 32px !important; color: var(--text-muted); }
+.col-empty-icon {
+  font-size: 32px !important;
+  color: var(--ink-muted);
+}
 
 .col-empty-text {
   font-family: var(--font-utility);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-muted);
+  color: var(--ink-muted);
   line-height: 1.6;
 }
 
@@ -504,26 +580,26 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
 
 .spinner {
   display: inline-block;
-  width: 10px; height: 10px;
-  border: 1.5px solid rgba(232,223,200,0.2);
-  border-top-color: var(--accent-brass);
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid var(--ink-faint);
+  border-top-color: var(--marquee);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
   vertical-align: middle;
 }
 
-/* ─── Skeleton Loading ───────────────────────────────────────── */
+/* ─── Skeleton loading ───────────────────────────────────────── */
 .skeleton-board {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  border: 1px solid var(--border-column);
-  background-color: var(--bg-base);
+  border: 1px solid var(--ink-faint);
 }
 
 @media (max-width: 900px) { .skeleton-board { grid-template-columns: repeat(2, 1fr); } }
 
 .skeleton-col {
-  border-right: 1px solid var(--border-column);
+  border-right: 1px solid var(--ink-faint);
   padding: var(--s5);
   display: flex;
   flex-direction: column;
@@ -532,11 +608,16 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
 
 .skeleton-col:last-child { border-right: none; }
 
+/* Shimmer on Stub bg — uses Stub-dim as the darker band */
 .skeleton-bar {
-  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.04) 75%);
+  background: linear-gradient(
+    90deg,
+    rgba(34, 31, 29, 0.06) 25%,
+    rgba(34, 31, 29, 0.11) 50%,
+    rgba(34, 31, 29, 0.06) 75%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.4s infinite;
-  border-radius: 1px;
 }
 
 @keyframes shimmer {
@@ -544,136 +625,218 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
   100% { background-position: -200% 0; }
 }
 
-/* ─── Error State ────────────────────────────────────────────── */
+/* ─── Error state ────────────────────────────────────────────── */
 .state-full {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  min-height: 40vh; gap: var(--s4);
-  text-align: center; padding: var(--s8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  gap: var(--s4);
+  text-align: center;
+  padding: var(--s8);
 }
 
-/* ─── Buttons (generic) ──────────────────────────────────────── */
+/* ─── Generic Buttons ────────────────────────────────────────── */
 .btn {
-  display: inline-flex; align-items: center; justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: var(--s2);
   padding: var(--s2) var(--s4);
   font-family: var(--font-utility);
-  font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
-  cursor: pointer; border: 1px solid; transition: all 0.15s;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all 0.15s;
   white-space: nowrap;
 }
 
 .btn:hover  { transform: translateY(1px); }
 .btn:active { transform: translateY(2px); }
 
-.btn-primary  { background: var(--accent-red); color: var(--text-primary); border-color: rgba(255,255,255,0.1); }
-.btn-primary:hover { background: #8a2b3c; }
+/* Primary: Marquee red, Stub text */
+.btn-primary {
+  background: var(--marquee);
+  color: var(--stub);
+  border-color: rgba(34, 31, 29, 0.2);
+  box-shadow: 2px 2px 0 var(--ink);
+}
 
-.btn-secondary { background: transparent; color: var(--text-secondary); border-color: rgba(232,223,200,0.15); }
-.btn-secondary:hover { color: var(--text-primary); border-color: rgba(232,223,200,0.35); }
+.btn-primary:hover { background: var(--marquee-hover); }
 
-.btn-ghost { background: transparent; color: var(--text-secondary); border-color: rgba(232,223,200,0.15); }
-.btn-ghost:hover { color: var(--text-primary); }
+/* Secondary: transparent with Ink border — on Stub bg */
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border-color: rgba(34, 31, 29, 0.25);
+  box-shadow: 1px 1px 0 rgba(34, 31, 29, 0.15);
+}
+
+.btn-secondary:hover { border-color: var(--ink); }
+
+/* Ghost: for use on Ink/dark surfaces — Stub text */
+.btn-ghost {
+  background: transparent;
+  color: rgba(232, 222, 200, 0.6);
+  border-color: rgba(232, 222, 200, 0.15);
+}
+
+.btn-ghost:hover { color: var(--stub); border-color: rgba(232, 222, 200, 0.4); }
 
 /* ─── Add Application Modal ──────────────────────────────────── */
+/* Modals appear on a darkened overlay; box itself is light Stub */
 .modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(14,12,10,0.85);
-  display: flex; align-items: flex-start; justify-content: center;
-  z-index: 200; padding: var(--s8) var(--s4);
-  overflow-y: auto; backdrop-filter: blur(4px);
+  position: fixed;
+  inset: 0;
+  background: rgba(34, 31, 29, 0.72);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 200;
+  padding: var(--s8) var(--s4);
+  overflow-y: auto;
+  backdrop-filter: blur(3px);
 }
 
 .modal-box {
-  width: 100%; max-width: 580px;
-  background: var(--bg-card);
-  border: 1px solid rgba(232,223,200,0.12);
+  width: 100%;
+  max-width: 580px;
+  background: var(--stub-bright);
+  border: 1px solid rgba(34, 31, 29, 0.2);
+  box-shadow: 4px 4px 0 var(--ink);
   margin: auto;
 }
 
+/* Modal header is Reel dark (like a header bar) */
 .modal-header {
-  background: var(--bg-header);
+  background: var(--reel);
   padding: var(--s4) var(--s6);
-  display: flex; justify-content: space-between; align-items: center;
-  border-bottom: 1px solid rgba(232,223,200,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--ink);
 }
 
-.modal-header h2 { font-size: 18px; color: var(--text-primary); }
+.modal-header h2 {
+  font-size: 18px;
+  color: var(--stub);
+}
 
-.modal-body { padding: var(--s6); display: flex; flex-direction: column; gap: var(--s5); }
+.modal-body {
+  padding: var(--s6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
+}
 
 .modal-footer {
   padding: var(--s4) var(--s6);
-  border-top: 1px dashed rgba(232,223,200,0.1);
-  display: flex; justify-content: flex-end; gap: var(--s3);
+  border-top: 2px dashed rgba(34, 31, 29, 0.1);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--s3);
 }
 
+/* Form fields on the light Stub modal body */
 .field-group { display: flex; flex-direction: column; gap: var(--s1); }
 
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); }
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s4);
+}
 
 @media (max-width: 500px) { .field-row { grid-template-columns: 1fr; } }
 
 .field-label {
-  font-family: var(--font-utility); font-size: 10px;
-  text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--text-secondary);
+  font-family: var(--font-utility);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
 }
 
-.field-input, .field-textarea {
-  font-family: var(--font-body); font-size: 13px;
+/* Government-form style: only a bottom border in Ink */
+.field-input,
+.field-textarea {
+  font-family: var(--font-body);
+  font-size: 13px;
   padding: var(--s2) 0;
-  border: none; border-bottom: 1px solid rgba(232,223,200,0.15);
-  background: transparent; color: var(--text-primary);
-  width: 100%; outline: none;
+  border: none;
+  border-bottom: 2px solid rgba(34, 31, 29, 0.2);
+  background: transparent;
+  color: var(--ink);
+  width: 100%;
+  outline: none;
   transition: border-color 0.15s;
 }
 
-.field-input::placeholder, .field-textarea::placeholder { color: var(--text-muted); }
-.field-input:focus, .field-textarea:focus { border-bottom-color: rgba(232,223,200,0.5); }
+.field-input::placeholder,
+.field-textarea::placeholder { color: var(--ink-muted); }
+
+.field-input:focus,
+.field-textarea:focus { border-bottom-color: var(--ink); }
 
 .field-textarea {
-  resize: vertical; min-height: 80px;
-  border: 1px solid rgba(232,223,200,0.1);
+  resize: vertical;
+  min-height: 80px;
+  border: 1px solid rgba(34, 31, 29, 0.15);
   padding: var(--s3);
   line-height: 1.6;
 }
 
-.field-textarea:focus { border-color: rgba(232,223,200,0.3); }
+.field-textarea:focus { border-color: rgba(34, 31, 29, 0.45); }
 
-.field-hint { font-family: var(--font-utility); font-size: 10px; color: var(--text-muted); }
+.field-hint {
+  font-family: var(--font-utility);
+  font-size: 10px;
+  color: var(--ink-muted);
+}
 
 .form-error {
-  font-family: var(--font-utility); font-size: 11px;
-  color: #ff8f8f;
+  font-family: var(--font-utility);
+  font-size: 11px;
+  color: var(--color-error);
   padding: var(--s2) var(--s3);
-  border: 1px solid rgba(186,26,26,0.4);
-  background: rgba(186,26,26,0.1);
+  border: 1px solid rgba(186, 26, 26, 0.3);
+  background: rgba(186, 26, 26, 0.06);
 }
 
 /* ─── Verdict Modal ──────────────────────────────────────────── */
 .verdict-overlay {
-  position: fixed; inset: 0;
-  background: rgba(12,10,8,0.92);
-  display: flex; align-items: flex-start; justify-content: center;
-  z-index: 300; padding: var(--s8) var(--s4);
-  overflow-y: auto; backdrop-filter: blur(8px);
+  position: fixed;
+  inset: 0;
+  background: rgba(34, 31, 29, 0.82);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 300;
+  padding: var(--s8) var(--s4);
+  overflow-y: auto;
+  backdrop-filter: blur(6px);
 }
 
 .verdict-wrap {
-  width: 100%; max-width: 620px;
+  width: 100%;
+  max-width: 620px;
   margin: auto;
-  display: flex; flex-direction: column; gap: var(--s4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
 }
 
 .verdict-close-row { display: flex; justify-content: flex-end; }
 
+/* The certificate card: Stub cream with Marquee border — like an actual printed cert */
 .verdict-cert {
-  background: var(--bg-card);
-  border: 3px solid var(--accent-red);
-  box-shadow: 0 0 0 1px rgba(232,223,200,0.06), 8px 8px 0 rgba(0,0,0,0.5);
+  background: var(--stub-bright);
+  border: 4px solid var(--marquee);
+  box-shadow: 6px 6px 0 var(--ink);
   overflow: hidden;
-  animation: slam 0.45s cubic-bezier(0.25,1,0.5,1) both;
+  animation: slam 0.45s cubic-bezier(0.25, 1, 0.5, 1) both;
 }
 
 @keyframes slam {
@@ -683,87 +846,132 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
   to   { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
+/* Perforation strip: Reel dark bar at the top of the cert */
 .verdict-cert-perfs {
-  display: flex; gap: 6px;
+  display: flex;
+  gap: 6px;
   padding: 5px 10px;
-  background: var(--bg-header);
-  border-bottom: 1px dashed rgba(232,223,200,0.1);
+  background: var(--reel);
+  border-bottom: 1px dashed rgba(184, 147, 47, 0.3);
 }
 
 .verdict-perf-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: rgba(232,223,200,0.08);
-  border: 1px solid rgba(232,223,200,0.12);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(232, 222, 200, 0.12);
+  border: 1px solid rgba(232, 222, 200, 0.15);
 }
 
+/* Body is light (Stub cream) with Ink text */
 .verdict-cert-body {
   padding: var(--s8);
-  display: flex; flex-direction: column; align-items: center; text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .verdict-eyebrow {
   font-family: var(--font-utility);
-  font-size: 9px; text-transform: uppercase; letter-spacing: 0.15em;
-  color: var(--text-muted);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ink-muted);
   margin-bottom: var(--s4);
 }
 
+/* Score: Ink utility font, color-coded */
 .verdict-big-score {
   font-family: var(--font-utility);
-  font-size: 96px; line-height: 1; font-weight: 700;
+  font-size: 96px;
+  line-height: 1;
+  font-weight: 700;
   letter-spacing: -0.04em;
   margin-bottom: var(--s2);
 }
 
-.verdict-big-score.score-high { color: #8ab870; }
-.verdict-big-score.score-mid  { color: var(--accent-brass); }
-.verdict-big-score.score-low  { color: #e05c70; }
+.verdict-big-score.score-high { color: var(--moss); }          /* ≥75 */
+.verdict-big-score.score-mid  { color: var(--brass); }         /* ≥50 */
+.verdict-big-score.score-low  { color: var(--marquee); }       /* <50 */
 
 .verdict-denom { font-size: 36px; font-weight: 400; opacity: 0.3; }
 
+/* Rating label: Instrument Serif Italic, Ink */
 .verdict-rating {
-  font-family: var(--font-display); font-style: italic;
-  font-size: 26px; color: var(--text-primary);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 26px;
+  color: var(--ink);
   margin-bottom: var(--s3);
 }
 
 .verdict-sub {
-  font-size: 13px; color: var(--text-secondary);
-  max-width: 300px; line-height: 1.6;
+  font-size: 13px;
+  color: var(--ink-muted);
+  max-width: 300px;
+  line-height: 1.6;
 }
 
-.verdict-sections { display: flex; flex-direction: column; gap: var(--s3); }
+/* Sections below the cert: light Stub bg panels, Reel headers */
+.verdict-sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+}
 
 .verdict-section {
-  background: var(--bg-card);
-  border: 1px solid rgba(232,223,200,0.08);
+  background: var(--stub-bright);
+  border: 1px solid rgba(34, 31, 29, 0.12);
+  box-shadow: 2px 2px 0 rgba(34, 31, 29, 0.08);
 }
 
+/* Section header: Reel dark bar — mirrors card header */
 .verdict-section-hd {
-  background: var(--bg-header);
+  background: var(--reel);
   padding: var(--s2) var(--s4);
   font-family: var(--font-utility);
-  font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--text-secondary);
-  display: flex; align-items: center; gap: var(--s2);
-  border-bottom: 1px solid rgba(232,223,200,0.06);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(232, 222, 200, 0.65);
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  border-bottom: 1px solid rgba(34, 31, 29, 0.2);
 }
 
-.verdict-section-body { padding: var(--s4); display: flex; flex-direction: column; gap: var(--s3); }
+.verdict-section-body {
+  padding: var(--s4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+}
 
+/* Items: Ink text on Stub bg */
 .verdict-item {
-  display: flex; gap: var(--s2);
-  font-size: 13px; line-height: 1.55; color: var(--text-secondary);
+  display: flex;
+  gap: var(--s2);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-muted);
   align-items: flex-start;
 }
 
-.vbullet { flex-shrink: 0; font-family: var(--font-utility); font-size: 10px; margin-top: 3px; }
-.vbullet-strength { color: #8ab870; }
-.vbullet-gap      { color: #e05c70; }
-.vbullet-suggest  { color: var(--accent-brass); }
+.vbullet {
+  flex-shrink: 0;
+  font-family: var(--font-utility);
+  font-size: 10px;
+  margin-top: 3px;
+}
+
+.vbullet-strength { color: var(--moss); }
+.vbullet-gap      { color: var(--marquee); }
+.vbullet-suggest  { color: var(--brass); }
 
 .verdict-actions {
-  display: flex; gap: var(--s3);
+  display: flex;
+  gap: var(--s3);
   animation: fadeUp 0.4s ease 0.4s both;
 }
 
@@ -772,7 +980,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; margin: 0; 
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── Responsive tweaks ──────────────────────────────────────── */
+/* ─── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .app-header { padding: 0 var(--s4); }
   .page-body  { padding: var(--s4); }
