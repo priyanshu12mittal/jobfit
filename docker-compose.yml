@@ -1,0 +1,106 @@
+# docker-compose.yml
+#
+# Starts the entire JobFit stack with one command:
+#   docker compose up --build
+#
+# Services:
+#   postgres    – the database (official image, no Dockerfile needed)
+#   ai-service  – FastAPI + Gemini (our Dockerfile)
+#   orchestrator– Spring Boot (our Dockerfile)
+#   frontend    – Next.js (our Dockerfile)
+#
+# Internal networking:
+#   Docker Compose creates a private network called "jobfit-net".
+#   Services talk to each other using their SERVICE NAME as the hostname
+#   (e.g. the orchestrator reaches the AI service at http://ai-service:8000).
+#   Only the frontend (port 3000) is exposed to your browser.
+
+services:
+
+  # ── PostgreSQL ──────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine           # official, lightweight Postgres image
+    container_name: jobfit-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       jobfit
+      POSTGRES_USER:     jobfit
+      POSTGRES_PASSWORD: jobfit_secret  # override in production!
+    volumes:
+      - postgres-data:/var/lib/postgresql/data  # persist DB across restarts
+    ports:
+      - "5432:5432"   # expose so you can still connect with psql / TablePlus
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jobfit"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── AI Service (FastAPI) ────────────────────────────────────────────────────
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: jobfit-ai-service
+    restart: unless-stopped
+    environment:
+      # Mount your real API key from a .env file at the project root
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+    # Not exposed to host — only reachable by orchestrator on the internal network
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Orchestrator (Spring Boot) ──────────────────────────────────────────────
+  orchestrator:
+    build:
+      context: ./orchestrator
+      dockerfile: Dockerfile
+    container_name: jobfit-orchestrator
+    restart: unless-stopped
+    environment:
+      # Postgres — uses the service name "postgres" as the host
+      SPRING_DATASOURCE_URL:      jdbc:postgresql://postgres:5432/jobfit
+      DB_USERNAME:                jobfit
+      DB_PASSWORD:                jobfit_secret
+      # AI service — uses the service name "ai-service" as the host
+      AI_SERVICE_URL:             http://ai-service:8000
+    ports:
+      - "8081:8081"   # exposed for direct curl testing
+    depends_on:
+      postgres:
+        condition: service_healthy   # wait until Postgres is accepting connections
+      ai-service:
+        condition: service_healthy   # wait until AI service is responding
+
+  # ── Frontend (Next.js) ──────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # Tells Next.js to proxy /api/* → orchestrator container
+        ORCHESTRATOR_URL: http://orchestrator:8081
+    container_name: jobfit-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"   # this is what you open in your browser
+    depends_on:
+      - orchestrator
+
+# ── Named volumes ──────────────────────────────────────────────────────────────
+# Named volumes survive "docker compose down" — data is not lost.
+# Run "docker compose down -v" to also delete the volume (full reset).
+volumes:
+  postgres-data:
+
+# ── Networks ───────────────────────────────────────────────────────────────────
+# Compose creates a default bridge network automatically.
+# We name it explicitly so it's easy to reference in debugging.
+networks:
+  default:
+    name: jobfit-net

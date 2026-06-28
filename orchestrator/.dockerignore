@@ -1,0 +1,11 @@
+# Gradle build output
+build/
+.gradle/
+
+# Don't copy the local .env or secrets
+.env
+
+# Editor noise
+.DS_Store
+.idea/
+*.iml
