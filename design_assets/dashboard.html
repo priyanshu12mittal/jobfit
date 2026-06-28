@@ -1,0 +1,469 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>JobFit AI - Dashboard</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config injected from instructions -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-container": "#7a2331",
+                      "primary-fixed": "#ffdadb",
+                      "tertiary-fixed-dim": "#bfcc9e",
+                      "surface-container-lowest": "#ffffff",
+                      "outline-variant": "#dbc0c1",
+                      "background": "#fff8f5",
+                      "on-primary-fixed-variant": "#7f2735",
+                      "surface-container-highest": "#e8e1dd",
+                      "on-primary": "#ffffff",
+                      "surface-container-high": "#eee7e3",
+                      "on-tertiary-fixed": "#151f02",
+                      "surface-variant": "#e8e1dd",
+                      "on-tertiary-container": "#a8b589",
+                      "on-secondary": "#ffffff",
+                      "surface-bright": "#fff8f5",
+                      "tertiary-container": "#3c4724",
+                      "inverse-primary": "#ffb2b8",
+                      "on-error": "#ffffff",
+                      "error": "#ba1a1a",
+                      "surface": "#fff8f5",
+                      "on-background": "#1e1b19",
+                      "on-primary-container": "#ff8f99",
+                      "surface-tint": "#9e3e4b",
+                      "on-secondary-container": "#755900",
+                      "on-tertiary-fixed-variant": "#404b27",
+                      "secondary-container": "#fdd268",
+                      "tertiary": "#263010",
+                      "on-secondary-fixed": "#251a00",
+                      "secondary-fixed": "#ffdf96",
+                      "inverse-on-surface": "#f7efeb",
+                      "outline": "#887273",
+                      "primary": "#5c0b1c",
+                      "secondary-fixed-dim": "#ebc159",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-low": "#faf2ee",
+                      "tertiary-fixed": "#dbe8b8",
+                      "surface-container": "#f4ece9",
+                      "primary-fixed-dim": "#ffb2b8",
+                      "on-surface-variant": "#554243",
+                      "on-surface": "#1e1b19",
+                      "on-secondary-fixed-variant": "#5a4400",
+                      "error-container": "#ffdad6",
+                      "on-error-container": "#93000a",
+                      "on-primary-fixed": "#40000e",
+                      "secondary": "#765a00",
+                      "surface-dim": "#e0d9d5",
+                      "inverse-surface": "#33302d"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "max_width": "1200px",
+                      "gutter": "24px",
+                      "margin": "32px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Instrument Serif"
+                      ],
+                      "utility-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg-mobile": [
+                              "Instrument Serif"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Instrument Serif"
+                      ],
+                      "utility-xs": [
+                              "JetBrains Mono"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "verdict-stamp": [
+                              "Instrument Serif"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "utility-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "52px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "utility-xs": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "verdict-stamp": [
+                              "24px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Custom styles for tactile minimalism and industrial vintage */
+        body {
+            background-color: #E8DEC8; /* Stub */
+            color: #221F1D; /* Ink */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+        }
+        
+        .bg-reel {
+            background-color: #3C3835;
+        }
+        .text-reel {
+            color: #3C3835;
+        }
+        .bg-ink {
+            background-color: #221F1D;
+        }
+        .text-ink {
+            color: #221F1D;
+        }
+        .bg-brass {
+            background-color: #B8932F;
+        }
+        .text-brass {
+            color: #B8932F;
+        }
+        .border-brass {
+            border-color: #B8932F;
+        }
+        .border-ink {
+            border-color: #221F1D;
+        }
+        .bg-marquee-red {
+            background-color: #9e3e4b; /* mapped from surface-tint roughly */
+        }
+        .text-marquee-red {
+            color: #9e3e4b;
+        }
+        
+        .ticket-stub {
+            position: relative;
+            background-color: #3C3835;
+            color: #E8DEC8;
+            border: 1px solid #B8932F;
+            box-shadow: 2px 2px 0px 0px #221F1D;
+        }
+        
+        .perforated-bottom {
+            border-bottom: 2px dashed #B8932F;
+            position: relative;
+        }
+        .perforated-bottom::before, .perforated-bottom::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            width: 16px;
+            height: 16px;
+            background-color: #E8DEC8;
+            border-radius: 50%;
+            border-top: 1px solid #B8932F;
+            border-right: 1px solid transparent;
+            border-left: 1px solid transparent;
+            border-bottom: 1px solid transparent;
+            z-index: 10;
+        }
+        .perforated-bottom::before {
+            left: -9px;
+            transform: rotate(45deg);
+        }
+        .perforated-bottom::after {
+            right: -9px;
+            transform: rotate(-45deg);
+        }
+        
+        .stage-column {
+            background-color: rgba(60, 56, 53, 0.05); /* very light reel for stage */
+            border-left: 1px dashed #221F1D;
+        }
+        .stage-column:last-child {
+            border-right: 1px dashed #221F1D;
+        }
+        
+        .input-vintage {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #221F1D;
+            border-radius: 0;
+            padding: 8px 0;
+        }
+        .input-vintage:focus {
+            outline: none;
+            box-shadow: none;
+            border-bottom-color: #9e3e4b;
+        }
+        
+        .btn-marquee {
+            background-color: #9e3e4b;
+            color: #221F1D;
+            border: 1px solid #221F1D;
+            box-shadow: 2px 2px 0px 0px #221F1D;
+            transition: all 0.1s ease;
+        }
+        .btn-marquee:active {
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px 0px #221F1D;
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: #221F1D;
+            border: 1px solid #B8932F;
+            transition: all 0.1s ease;
+        }
+        .btn-secondary:hover {
+            background-color: rgba(184, 147, 47, 0.1);
+        }
+        
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-body-md text-body-md antialiased selection:bg-surface-tint selection:text-white">
+<!-- TopAppBar -->
+<header class="bg-tertiary dark:bg-tertiary text-on-primary dark:text-on-primary flex justify-between items-center w-full px-gutter h-20 max-w-max_width mx-auto border-b-4 border-primary-container docked full-width top-0 z-40 sticky">
+<div class="flex items-center gap-4">
+<h1 class="text-display-lg font-display-lg text-primary-fixed uppercase tracking-tighter hidden md:block">JOBFIT</h1>
+<h1 class="text-display-lg-mobile font-display-lg-mobile text-primary-fixed uppercase tracking-tighter md:hidden">JOBFIT</h1>
+</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-secondary-fixed font-bold border-b-2 border-secondary-fixed pb-1 translate-y-px transition-all hover:text-secondary-fixed-dim" href="#">Dashboard</a>
+<a class="text-surface-variant font-medium hover:text-secondary-fixed-dim transition-colors" href="#">History</a>
+<a class="text-surface-variant font-medium hover:text-secondary-fixed-dim transition-colors" href="#">Archive</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="text-utility-sm font-utility-sm text-surface-variant hidden md:inline-block mr-4">NOW SHOWING: 4 applications</span>
+<button class="w-10 h-10 flex items-center justify-center bg-primary-container text-on-primary-container rounded-sm border border-secondary-fixed hover:bg-surface-tint transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-surface-variant hover:text-secondary-fixed-dim transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<main class="flex-grow w-full max-w-max_width mx-auto px-gutter py-8 flex flex-col gap-12">
+<!-- Intake Section -->
+<section class="w-full flex flex-col gap-6">
+<div class="flex items-center gap-4 border-b-2 border-ink pb-2">
+<span class="material-symbols-outlined text-marquee-red text-3xl">gavel</span>
+<h2 class="text-headline-md font-headline-md text-ink uppercase tracking-tight">GET A VERDICT</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="flex flex-col gap-2">
+<label class="text-utility-sm font-utility-sm text-ink uppercase tracking-widest">Applicant Resume</label>
+<textarea class="w-full h-48 input-vintage text-body-md font-body-md resize-none bg-surface-container-highest/20" placeholder="Paste full resume text here..."></textarea>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-utility-sm font-utility-sm text-ink uppercase tracking-widest">Job Description</label>
+<textarea class="w-full h-48 input-vintage text-body-md font-body-md resize-none bg-surface-container-highest/20" placeholder="Paste job description requirements..."></textarea>
+</div>
+</div>
+<div class="flex justify-center mt-4">
+<button class="btn-marquee px-12 py-4 text-headline-md font-headline-md uppercase tracking-widest rounded-sm">
+                    Analyze Match
+                </button>
+</div>
+</section>
+<!-- Tracker Board -->
+<section class="w-full flex flex-col gap-6 mt-8">
+<div class="flex items-center gap-4 border-b-2 border-ink pb-2">
+<span class="material-symbols-outlined text-marquee-red text-3xl">movie</span>
+<h2 class="text-headline-md font-headline-md text-ink uppercase tracking-tight">THE MARQUEE BOARD</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-0 min-h-[500px] border-t-4 border-b-4 border-ink py-4">
+<!-- Column: APPLIED -->
+<div class="stage-column p-4 flex flex-col gap-4">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-utility-sm font-utility-sm text-ink font-bold tracking-widest uppercase">Applied</h3>
+<span class="w-6 h-6 rounded-full bg-ink text-surface-container-lowest flex items-center justify-center text-xs font-bold">2</span>
+</div>
+<!-- Ticket Stub 1 -->
+<div class="ticket-stub p-6 flex flex-col gap-4">
+<div class="flex justify-between items-start perforated-bottom pb-4">
+<span class="text-utility-xs font-utility-xs text-brass">ID: REQ-084</span>
+<span class="text-utility-xs font-utility-xs bg-brass text-ink px-2 py-0.5 uppercase">Pending</span>
+</div>
+<div class="flex flex-col gap-1 py-2">
+<h4 class="text-headline-md font-headline-md leading-none text-surface-container-lowest">Frontend Engineer</h4>
+<span class="text-utility-sm font-utility-sm text-surface-variant">Stripe</span>
+</div>
+<div class="mt-auto pt-4 flex justify-between items-center text-utility-xs font-utility-xs">
+<span class="text-surface-variant">Oct 12, 2024</span>
+<button class="text-brass hover:text-white transition-colors underline decoration-dashed underline-offset-4">Review</button>
+</div>
+</div>
+<!-- Ticket Stub 2 -->
+<div class="ticket-stub p-6 flex flex-col gap-4">
+<div class="flex justify-between items-start perforated-bottom pb-4">
+<span class="text-utility-xs font-utility-xs text-brass">ID: REQ-092</span>
+<span class="text-utility-xs font-utility-xs bg-brass text-ink px-2 py-0.5 uppercase">Pending</span>
+</div>
+<div class="flex flex-col gap-1 py-2">
+<h4 class="text-headline-md font-headline-md leading-none text-surface-container-lowest">UX Designer</h4>
+<span class="text-utility-sm font-utility-sm text-surface-variant">Vercel</span>
+</div>
+<div class="mt-auto pt-4 flex justify-between items-center text-utility-xs font-utility-xs">
+<span class="text-surface-variant">Oct 14, 2024</span>
+<button class="text-brass hover:text-white transition-colors underline decoration-dashed underline-offset-4">Review</button>
+</div>
+</div>
+</div>
+<!-- Column: SCREENING -->
+<div class="stage-column p-4 flex flex-col gap-4">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-utility-sm font-utility-sm text-ink font-bold tracking-widest uppercase">Screening</h3>
+<span class="w-6 h-6 rounded-full bg-ink text-surface-container-lowest flex items-center justify-center text-xs font-bold">1</span>
+</div>
+<!-- Ticket Stub 3 (Certified Match) -->
+<div class="ticket-stub p-6 flex flex-col gap-4 relative overflow-hidden">
+<!-- Verdict Stamp Overlay -->
+<div class="absolute -right-4 top-24 border-4 border-[#9e3e4b] text-[#9e3e4b] px-3 py-1 transform -rotate-6 z-20 opacity-80 mix-blend-screen pointer-events-none">
+<span class="font-verdict-stamp text-verdict-stamp uppercase tracking-widest font-bold">CERTIFIED MATCH</span>
+</div>
+<div class="flex justify-between items-start perforated-bottom pb-4">
+<span class="text-utility-xs font-utility-xs text-brass">ID: REQ-071</span>
+<span class="text-utility-xs font-utility-xs bg-tertiary-fixed-dim text-ink px-2 py-0.5 uppercase">Passed</span>
+</div>
+<div class="flex flex-col gap-1 py-2">
+<h4 class="text-headline-md font-headline-md leading-none text-surface-container-lowest">Senior Product Mgr</h4>
+<span class="text-utility-sm font-utility-sm text-surface-variant">Linear</span>
+</div>
+<div class="mt-auto pt-4 flex justify-between items-center text-utility-xs font-utility-xs">
+<span class="text-surface-variant">Oct 05, 2024</span>
+<button class="text-brass hover:text-white transition-colors underline decoration-dashed underline-offset-4">Details</button>
+</div>
+</div>
+</div>
+<!-- Column: INTERVIEW -->
+<div class="stage-column p-4 flex flex-col gap-4">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-utility-sm font-utility-sm text-ink font-bold tracking-widest uppercase">Interview</h3>
+<span class="w-6 h-6 rounded-full bg-ink text-surface-container-lowest flex items-center justify-center text-xs font-bold">1</span>
+</div>
+<!-- Ticket Stub 4 -->
+<div class="ticket-stub p-6 flex flex-col gap-4">
+<div class="flex justify-between items-start perforated-bottom pb-4">
+<span class="text-utility-xs font-utility-xs text-brass">ID: REQ-044</span>
+<span class="text-utility-xs font-utility-xs bg-secondary-fixed-dim text-ink px-2 py-0.5 uppercase">Active</span>
+</div>
+<div class="flex flex-col gap-1 py-2">
+<h4 class="text-headline-md font-headline-md leading-none text-surface-container-lowest">Staff Engineer</h4>
+<span class="text-utility-sm font-utility-sm text-surface-variant">OpenAI</span>
+</div>
+<div class="mt-auto pt-4 flex justify-between items-center text-utility-xs font-utility-xs">
+<span class="text-surface-variant">Sep 28, 2024</span>
+<button class="text-brass hover:text-white transition-colors underline decoration-dashed underline-offset-4">Prep</button>
+</div>
+</div>
+</div>
+<!-- Column: OFFER -->
+<div class="stage-column p-4 flex flex-col gap-4">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-utility-sm font-utility-sm text-ink font-bold tracking-widest uppercase">Offer</h3>
+<span class="w-6 h-6 rounded-full bg-surface-container-highest text-surface-variant flex items-center justify-center text-xs font-bold border border-ink">0</span>
+</div>
+<div class="flex-grow flex flex-col items-center justify-center text-center p-8 opacity-50">
+<span class="material-symbols-outlined text-4xl mb-2 text-ink">inbox</span>
+<p class="text-utility-sm font-utility-sm text-ink">Nothing in the booth yet.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 md:hidden bg-tertiary border-t-2 border-primary-container shadow-[0_-4px_0_0_rgba(0,0,0,0.2)]">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-lg px-6 py-2 scale-95 transition-transform duration-100 hover:bg-primary-container/50" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">confirmation_number</span>
+<span class="text-utility-xs font-utility-xs mt-1">Now Showing</span>
+</a>
+<a class="flex flex-col items-center justify-center text-surface-variant px-6 py-2 hover:bg-primary-container/50 rounded-lg" href="#">
+<span class="material-symbols-outlined">verified</span>
+<span class="text-utility-xs font-utility-xs mt-1">Censor Board</span>
+</a>
+<a class="flex flex-col items-center justify-center text-surface-variant px-6 py-2 hover:bg-primary-container/50 rounded-lg" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-utility-xs font-utility-xs mt-1">Archive</span>
+</a>
+<a class="flex flex-col items-center justify-center text-surface-variant px-6 py-2 hover:bg-primary-container/50 rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-utility-xs font-utility-xs mt-1">Settings</span>
+</a>
+</nav>
+
+
+</body></html>

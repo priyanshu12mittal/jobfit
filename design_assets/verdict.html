@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JobFit - Verdict</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#7a2331",
+                        "primary-fixed": "#ffdadb",
+                        "tertiary-fixed-dim": "#bfcc9e",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#dbc0c1",
+                        "background": "#fff8f5",
+                        "on-primary-fixed-variant": "#7f2735",
+                        "surface-container-highest": "#e8e1dd",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#eee7e3",
+                        "on-tertiary-fixed": "#151f02",
+                        "surface-variant": "#e8e1dd",
+                        "on-tertiary-container": "#a8b589",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#fff8f5",
+                        "tertiary-container": "#3c4724",
+                        "inverse-primary": "#ffb2b8",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface": "#fff8f5",
+                        "on-background": "#1e1b19",
+                        "on-primary-container": "#ff8f99",
+                        "surface-tint": "#9e3e4b",
+                        "on-secondary-container": "#755900",
+                        "on-tertiary-fixed-variant": "#404b27",
+                        "secondary-container": "#fdd268",
+                        "tertiary": "#263010",
+                        "on-secondary-fixed": "#251a00",
+                        "secondary-fixed": "#ffdf96",
+                        "inverse-on-surface": "#f7efeb",
+                        "outline": "#887273",
+                        "primary": "#5c0b1c",
+                        "secondary-fixed-dim": "#ebc159",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-low": "#faf2ee",
+                        "tertiary-fixed": "#dbe8b8",
+                        "surface-container": "#f4ece9",
+                        "primary-fixed-dim": "#ffb2b8",
+                        "on-surface-variant": "#554243",
+                        "on-surface": "#1e1b19",
+                        "on-secondary-fixed-variant": "#5a4400",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#40000e",
+                        "secondary": "#765a00",
+                        "surface-dim": "#e0d9d5",
+                        "inverse-surface": "#33302d",
+                        "stub": "#E8DEC8",
+                        "marquee-red": "#7A2331",
+                        "ink": "#221F1D",
+                        "brass": "#D4AF37",
+                        "reel": "#3C3835"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "max_width": "1200px",
+                        "gutter": "24px",
+                        "margin": "32px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Instrument Serif"],
+                        "utility-sm": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Instrument Serif"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Instrument Serif"],
+                        "utility-xs": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "verdict-stamp": ["Instrument Serif"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["32px", { "lineHeight": "36px", "fontWeight": "400" }],
+                        "utility-sm": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+                        "display-lg-mobile": ["36px", { "lineHeight": "40px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "52px", "fontWeight": "400" }],
+                        "utility-xs": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "verdict-stamp": ["24px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #E8DEC8; /* Stub background */
+            /* Subtle grain effect */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+
+        .perforated-border {
+            border-bottom: 2px dashed #887273;
+        }
+
+        /* Slam Animation */
+        @keyframes slam {
+            0% {
+                transform: scale(1.5) rotate(-5deg);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(0.95) rotate(2deg);
+                opacity: 1;
+            }
+            85% {
+                transform: scale(1.02) rotate(-1deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+            20%, 40%, 60%, 80% { transform: translateX(2px); }
+        }
+
+        .animate-slam {
+            animation: slam 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            opacity: 0; /* Starts hidden */
+        }
+        
+        .slam-impact {
+            animation: shake 0.3s ease-in-out;
+            animation-delay: 0.3s;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .animate-slam {
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
+            .slam-impact {
+                animation: none;
+            }
+        }
+        
+        .mechanical-button:hover {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center relative font-body-md text-ink antialiased">
+<!-- Top Action Area (Quiet) -->
+<div class="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-10">
+<a class="flex items-center gap-2 text-ink/70 hover:text-ink transition-colors font-utility-sm text-utility-sm group" href="#">
+<span class="material-symbols-outlined text-sm transition-transform group-hover:-translate-x-1">arrow_back</span>
+            Back to dashboard
+        </a>
+</div>
+<!-- Main Verdict Area -->
+<main class="w-full max-w-lg mx-auto px-6 flex flex-col items-center slam-impact gap-12">
+<!-- The Stamp Component -->
+<div class="animate-slam w-full bg-surface-container-lowest border-4 border-primary-container p-8 relative flex flex-col items-center shadow-[4px_4px_0px_0px_#221F1D]" style="transform-origin: center center;">
+<!-- Perforated top stub effect -->
+<div class="absolute -top-[10px] left-0 right-0 h-4 flex justify-between px-2 overflow-hidden opacity-30">
+<div class="w-2 h-2 rounded-full bg-stub mt-1"></div>
+<div class="w-2 h-2 rounded-full bg-stub mt-1"></div>
+<div class="w-2 h-2 rounded-full bg-stub mt-1"></div>
+<div class="w-2 h-2 rounded-full bg-stub mt-1"></div>
+<div class="w-2 h-2 rounded-full bg-stub mt-1"></div>
+<div class="w-2 h-2 rounded-full bg-stub mt-1"></div>
+<div class="w-2 h-2 rounded-full bg-stub mt-1"></div>
+<div class="w-2 h-2 rounded-full bg-stub mt-1"></div>
+</div>
+<!-- Stamp Header -->
+<h2 class="font-headline-md text-headline-md text-primary-container uppercase tracking-wide mb-6 text-center italic border-b-2 border-primary-container/20 pb-4 w-full">
+                Certificate of Fit
+            </h2>
+<!-- Stamp Score -->
+<div class="font-utility-sm text-[80px] leading-[80px] font-bold text-ink mb-6 tracking-tighter">
+                82 <span class="text-3xl text-ink/40 font-normal">/ 100</span>
+</div>
+<!-- Stamp Footer/Details -->
+<p class="font-body-md text-body-md text-ink/80 text-center max-w-[280px]">
+                Strong match — <span class="font-semibold">2 gaps</span> to close before applying.
+            </p>
+<!-- Vintage seal detail -->
+<div class="absolute bottom-4 right-4 opacity-20">
+<span class="material-symbols-outlined text-4xl" data-weight="fill">verified</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col sm:flex-row gap-4 w-full justify-center max-w-sm mx-auto opacity-0" style="animation: fadeIn 0.5s ease 0.6s forwards;">
+<style>
+                @keyframes fadeIn { to { opacity: 1; } }
+            </style>
+<button class="mechanical-button flex-1 py-3 px-6 border border-ink/40 font-utility-sm text-utility-sm text-ink hover:bg-ink/5 transition-all flex justify-center items-center gap-2">
+                View suggested bullets
+            </button>
+<button class="mechanical-button flex-1 py-3 px-6 bg-primary-container font-utility-sm text-utility-sm text-on-primary hover:bg-[#8A2B3C] transition-all flex justify-center items-center gap-2 shadow-[2px_2px_0px_0px_#221F1D]">
+<span class="material-symbols-outlined text-sm">bookmark</span>
+                Save to tracker
+            </button>
+</div>
+</main>
+<!-- Contextual details floating -->
+<div class="fixed bottom-6 left-6 font-utility-xs text-utility-xs text-ink/40">
+        REF: JBF-8924-A
+    </div>
+<div class="fixed bottom-6 right-6 font-utility-xs text-utility-xs text-ink/40">
+        ANALYSIS COMPLETE
+    </div>
+</body></html>
