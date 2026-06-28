@@ -13,3 +13,11 @@ class AnalysisResult(BaseModel):
     strengths: list[str] = Field(description="3-5 candidate strengths matching the JD")
     gaps: list[str] = Field(description="1-4 gaps or missing qualifications")
     suggested_bullets: list[str] = Field(description="2-3 rewritten resume bullets")
+
+
+class EmbedRequest(BaseModel):
+    texts: list[str] = Field(description="List of text chunks to embed", min_length=1)
+
+
+class EmbedResponse(BaseModel):
+    embeddings: list[list[float]] = Field(description="List of vector embeddings (384 dimensions)")

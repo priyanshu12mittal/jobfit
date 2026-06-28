@@ -6,7 +6,8 @@ from google.genai import errors as genai_errors
 from pydantic import ValidationError
 
 from analyzer import call_gemini
-from models import AnalyzeRequest
+from embeddings import generate_embeddings
+from models import AnalyzeRequest, EmbedRequest, EmbedResponse
 from prompts import ANALYZE_PROMPT
 
 logging.basicConfig(level=logging.INFO)
@@ -51,3 +52,12 @@ def analyze(request: AnalyzeRequest):
         jd_text=request.jd_text,
     )
     return call_gemini(prompt, MODEL)
+
+
+@app.post("/embed", response_model=EmbedResponse)
+def embed(request: EmbedRequest):
+    try:
+        vectors = generate_embeddings(request.texts)
+        return EmbedResponse(embeddings=vectors)
+    except RuntimeError as e:
+        return JSONResponse(status_code=503, content={"error": str(e)})
