@@ -14,17 +14,19 @@ import java.util.List;
 @Service
 public class ApplicationService {
 
-    private final ApplicationRepository applicationRepo;
-    private final AppUserRepository userRepo;
+    private final ApplicationRepository applicationRepository;
+    private final AppUserRepository userRepository;
+    private final ResumeVectorService resumeVectorService;
 
-    public ApplicationService(ApplicationRepository applicationRepo, AppUserRepository userRepo) {
-        this.applicationRepo = applicationRepo;
-        this.userRepo = userRepo;
+    public ApplicationService(ApplicationRepository applicationRepository, AppUserRepository userRepository, ResumeVectorService resumeVectorService) {
+        this.applicationRepository = applicationRepository;
+        this.userRepository = userRepository;
+        this.resumeVectorService = resumeVectorService;
     }
 
     @Transactional
     public Application create(Long userId, CreateApplicationRequest req) {
-        AppUser user = userRepo.findById(userId)
+        AppUser user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
 
         Application app = new Application();
@@ -35,15 +37,22 @@ public class ApplicationService {
         app.setResumeText(req.resumeText());
         app.setJdText(req.jdText());
 
-        return applicationRepo.save(app);
+        Application saved = applicationRepository.save(app);
+
+        // Trigger background embedding of the resume if provided
+        if (req.resumeText() != null && !req.resumeText().isBlank()) {
+            resumeVectorService.embedAndStoreResume(user.getId(), req.resumeText());
+        }
+
+        return saved;
     }
 
     public List<Application> listByUser(Long userId) {
-        return applicationRepo.findByUserIdOrderByCreatedAtDesc(userId);
+        return applicationRepository.findByUserIdOrderByCreatedAtDesc(userId);
     }
 
     public Application getById(Long id) {
-        return applicationRepo.findById(id)
+        return applicationRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Application not found: " + id));
     }
 
@@ -54,9 +63,13 @@ public class ApplicationService {
         if (req.company() != null) app.setCompany(req.company());
         if (req.role() != null) app.setRole(req.role());
         if (req.status() != null) app.setStatus(req.status());
-        if (req.resumeText() != null) app.setResumeText(req.resumeText());
         if (req.jdText() != null) app.setJdText(req.jdText());
+        if (req.resumeText() != null) {
+            app.setResumeText(req.resumeText());
+            // Update vectors if resume changes
+            resumeVectorService.embedAndStoreResume(app.getUser().getId(), req.resumeText());
+        }
 
-        return applicationRepo.save(app);
+        return applicationRepository.save(app);
     }
 }
