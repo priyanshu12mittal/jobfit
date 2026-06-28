@@ -65,7 +65,6 @@ public class AnalyzeService {
                 .body(EmbedResponse.class);
 
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("resume_text", app.getResumeText());
         requestBody.put("jd_text", app.getJdText());
 
         if (embedResponse != null && embedResponse.embeddings() != null && !embedResponse.embeddings().isEmpty()) {
@@ -80,12 +79,22 @@ public class AnalyzeService {
         }
 
         // 3. Send to AI Service
-        AnalyzeResponse response = restClient.post()
-                .uri("/analyze")
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(requestBody)
-                .retrieve()
-                .body(AnalyzeResponse.class);
+        AnalyzeResponse response;
+        try {
+            response = restClient.post()
+                    .uri("/analyze")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(requestBody)
+                    .retrieve()
+                    .body(AnalyzeResponse.class);
+        } catch (org.springframework.web.client.HttpClientErrorException.TooManyRequests e) {
+            throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.TOO_MANY_REQUESTS, "Too many requests to the AI service. Please wait a minute and try again.");
+        } catch (org.springframework.web.client.HttpClientErrorException e) {
+            if (e.getStatusCode().value() == 429) {
+                throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.TOO_MANY_REQUESTS, "Too many requests to the AI service. Please wait a minute and try again.");
+            }
+            throw e;
+        }
 
         app.setFitScore(response.fitScore());
         try {

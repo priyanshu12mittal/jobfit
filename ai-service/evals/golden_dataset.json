@@ -1,0 +1,72 @@
+{
+  "chunks": [
+    { "id": "chunk_1", "text": "Senior Backend Engineer at TechCorp. Built microservices in Java Spring Boot handling 10k requests per second." },
+    { "id": "chunk_2", "text": "DevOps experience: deployed applications using Docker and Kubernetes. Set up CI/CD pipelines in GitHub Actions." },
+    { "id": "chunk_3", "text": "Database administration: designed PostgreSQL schemas, optimized complex queries, and implemented Redis caching." },
+    { "id": "chunk_4", "text": "Frontend developer intern. Created responsive UIs using React, Next.js, and Tailwind CSS." },
+    { "id": "chunk_5", "text": "Machine Learning Engineer. Developed NLP models using PyTorch and HuggingFace. Deployed RAG pipelines using pgvector." },
+    { "id": "chunk_6", "text": "Project Manager. Led agile teams of 10+ engineers, tracked sprints using Jira, and presented quarterly OKRs." },
+    { "id": "chunk_7", "text": "Mobile App Developer. Published iOS and Android apps using Flutter and Dart. Reached 50k active users." },
+    { "id": "chunk_8", "text": "Security Specialist. Conducted penetration testing, implemented OAuth2, and ensured SOC2 compliance." },
+    { "id": "chunk_9", "text": "Data Engineer. Built ETL pipelines with Apache Spark and Kafka. Managed data warehouses in Snowflake." },
+    { "id": "chunk_10", "text": "Cloud Architect. Designed highly available architectures on AWS using EC2, S3, Lambda, and DynamoDB." },
+    { "id": "chunk_11", "text": "Technical Support Engineer. Resolved 500+ customer tickets using Zendesk. Triaged bugs and escalated to engineering." },
+    { "id": "chunk_12", "text": "Product Marketing Manager. Ran go-to-market campaigns for B2B SaaS. Authored blog posts and whitepapers that drove 20k leads." },
+    { "id": "chunk_13", "text": "Graphic Designer. Created branding assets using Adobe Illustrator and Photoshop. Designed trade show banners." },
+    { "id": "chunk_14", "text": "Quality Assurance Analyst. Wrote automated test scripts using Selenium and Python. Executed manual testing for mobile apps." }
+  ],
+  "cases": [
+    {
+      "jd_text": "Looking for a backend engineer. Must have strong Java and Spring Boot experience.",
+      "expected_chunk_ids": ["chunk_1"]
+    },
+    {
+      "jd_text": "We need a DevOps professional who is an expert in Docker and Kubernetes.",
+      "expected_chunk_ids": ["chunk_2"]
+    },
+    {
+      "jd_text": "PostgreSQL database administrator needed to optimize queries.",
+      "expected_chunk_ids": ["chunk_3"]
+    },
+    {
+      "jd_text": "Frontend role requiring React and Next.js skills.",
+      "expected_chunk_ids": ["chunk_4"]
+    },
+    {
+      "jd_text": "Looking for an AI engineer to build RAG pipelines.",
+      "expected_chunk_ids": ["chunk_5"]
+    },
+    {
+      "jd_text": "Scrum master / Project manager who is proficient with Jira.",
+      "expected_chunk_ids": ["chunk_6"]
+    },
+    {
+      "jd_text": "Mobile engineer with Flutter experience wanted.",
+      "expected_chunk_ids": ["chunk_7"]
+    },
+    {
+      "jd_text": "Cybersecurity role. Need someone to help us achieve SOC2 compliance.",
+      "expected_chunk_ids": ["chunk_8"]
+    },
+    {
+      "jd_text": "Data engineer to work with Spark and Kafka streaming.",
+      "expected_chunk_ids": ["chunk_9"]
+    },
+    {
+      "jd_text": "Full Stack Developer. Must be proficient in React frontend and Java Spring Boot backend.",
+      "expected_chunk_ids": ["chunk_1", "chunk_4"]
+    },
+    {
+      "jd_text": "Looking for an engineer who has experience in both Quality Assurance automation and DevOps CI/CD.",
+      "expected_chunk_ids": ["chunk_14", "chunk_2"]
+    },
+    {
+      "jd_text": "Seeking a multi-disciplinary individual to handle Customer Technical Support and B2B Product Marketing.",
+      "expected_chunk_ids": ["chunk_11", "chunk_12"]
+    },
+    {
+      "jd_text": "We need someone to manage our data pipeline in Snowflake and also design graphic branding assets.",
+      "expected_chunk_ids": ["chunk_9", "chunk_13"]
+    }
+  ]
+}

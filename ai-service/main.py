@@ -4,6 +4,9 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from google.genai import errors as genai_errors
 from pydantic import ValidationError
+import re
+from collections import deque
+import time
 
 from analyzer import call_gemini
 from embeddings import generate_embeddings
@@ -14,7 +17,29 @@ logging.basicConfig(level=logging.INFO)
 
 app = FastAPI(title="JobFit AI Service")
 
-MODEL = "gemini-2.5-flash"
+MODEL = "gemini-3.1-flash-lite"
+
+# Rate Limiter State
+request_times = deque(maxlen=10)
+
+def is_rate_limited() -> bool:
+    now = time.time()
+    # Remove timestamps older than 60 seconds
+    while request_times and request_times[0] < now - 60:
+        request_times.popleft()
+    if len(request_times) >= 10:
+        return True
+    request_times.append(now)
+    return False
+
+def redact_pii(text: str) -> str:
+    # Redact email addresses
+    text = re.sub(r'[\w\.-]+@[\w\.-]+\.\w+', '[EMAIL REDACTED]', text)
+    # Redact phone numbers (simple heuristics)
+    text = re.sub(r'\+?\d{1,3}?[-.\s]?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}', '[PHONE REDACTED]', text)
+    # Redact LinkedIn URLs
+    text = re.sub(r'https?://(?:www\.)?linkedin\.com/in/[a-zA-Z0-9_-]+/?', '[LINKEDIN REDACTED]', text)
+    return text
 
 
 @app.exception_handler(genai_errors.APIError)
@@ -47,15 +72,28 @@ def health():
 
 @app.post("/analyze")
 def analyze(request: AnalyzeRequest):
-    relevant_chunks_section = ""
-    if request.relevant_chunks and len(request.relevant_chunks) > 0:
-        relevant_chunks_section = "RELEVANT RESUME EXPERIENCES (PRIORITIZE THESE):\n- " + "\n- ".join(request.relevant_chunks)
+    if is_rate_limited():
+        return JSONResponse(
+            status_code=429,
+            content={"error": "Rate limit exceeded (10 RPM). Please try again later."}
+        )
+
+    if not request.relevant_chunks:
+        return JSONResponse(
+            status_code=400,
+            content={"error": "No resume data found. Please ensure the candidate's resume has been uploaded and processed."}
+        )
+        
+    relevant_chunks_section = "RELEVANT RESUME EXPERIENCES (PRIORITIZE THESE):\n- " + "\n- ".join(request.relevant_chunks)
 
     prompt = ANALYZE_PROMPT.format(
         relevant_chunks_section=relevant_chunks_section,
-        resume_text=request.resume_text,
         jd_text=request.jd_text,
     )
+    
+    # Log the redacted prompt
+    logging.getLogger(__name__).info(f"Sending prompt to Gemini:\n{redact_pii(prompt)}")
+    
     return call_gemini(prompt, MODEL)
 
 

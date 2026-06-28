@@ -28,12 +28,12 @@ def call_gemini(prompt: str, model: str) -> AnalysisResult:
             )
             return AnalysisResult.model_validate_json(response.text)
 
-        except genai_errors.ClientError as exc:
-            if exc.code == 429:
+        except genai_errors.APIError as exc:
+            if exc.code == 429 or exc.code == 503:
                 wait = INITIAL_BACKOFF_SECS * (2 ** attempt)
                 logger.warning(
-                    "Rate limited (429). Retry %d/%d in %ds",
-                    attempt + 1, MAX_RETRIES, wait,
+                    "API Error (%d). Retry %d/%d in %ds",
+                    exc.code, attempt + 1, MAX_RETRIES, wait,
                 )
                 last_exception = exc
                 time.sleep(wait)

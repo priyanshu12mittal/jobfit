@@ -4,9 +4,8 @@ MAX_INPUT_CHARS = 15_000
 
 
 class AnalyzeRequest(BaseModel):
-    resume_text: str = Field(min_length=50, max_length=MAX_INPUT_CHARS)
     jd_text: str = Field(min_length=50, max_length=MAX_INPUT_CHARS)
-    relevant_chunks: list[str] | None = Field(default=None, description="Most relevant resume chunks for RAG")
+    relevant_chunks: list[str] = Field(default_factory=list, description="Most relevant resume chunks for RAG")
 
 
 class AnalysisResult(BaseModel):

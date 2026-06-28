@@ -48,7 +48,7 @@ public class ApplicationController {
     @PatchMapping("/{id}")
     public ApplicationResponse update(
             @PathVariable Long id,
-            @RequestBody UpdateApplicationRequest request
+            @Valid @RequestBody UpdateApplicationRequest request
     ) {
         return ApplicationResponse.from(service.update(id, request));
     }
