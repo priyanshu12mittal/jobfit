@@ -45,7 +45,7 @@ services:
     restart: unless-stopped
     environment:
       # Mount your real API key from a .env file at the project root
-      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      GEMINI_API_KEY: ${GOOGLE_API_KEY}
     # Not exposed to host — only reachable by orchestrator on the internal network
     expose:
       - "8000"
