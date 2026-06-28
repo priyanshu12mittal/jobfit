@@ -47,7 +47,12 @@ def health():
 
 @app.post("/analyze")
 def analyze(request: AnalyzeRequest):
+    relevant_chunks_section = ""
+    if request.relevant_chunks and len(request.relevant_chunks) > 0:
+        relevant_chunks_section = "RELEVANT RESUME EXPERIENCES (PRIORITIZE THESE):\n- " + "\n- ".join(request.relevant_chunks)
+
     prompt = ANALYZE_PROMPT.format(
+        relevant_chunks_section=relevant_chunks_section,
         resume_text=request.resume_text,
         jd_text=request.jd_text,
     )

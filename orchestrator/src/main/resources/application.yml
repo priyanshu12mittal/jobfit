@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/jobfit
-    username: ${DB_USERNAME:priyanshu}
-    password: ${DB_PASSWORD:}
+    url: jdbc:postgresql://localhost:5433/jobfit
+    username: ${DB_USERNAME:jobfit}
+    password: ${DB_PASSWORD:jobfit_secret}
   jpa:
     hibernate:
       ddl-auto: update
