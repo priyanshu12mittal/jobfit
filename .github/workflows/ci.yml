@@ -1,0 +1,92 @@
+name: JobFit CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # ── 1. AI Service (Python) ──────────────────────────────────────────────────
+  ai-service-check:
+    name: Check AI Service
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ai-service
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint with Ruff
+        run: |
+          pip install ruff
+          ruff check .
+
+  # ── 2. Orchestrator (Java/Spring Boot) ──────────────────────────────────────
+  orchestrator-check:
+    name: Check Orchestrator
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./orchestrator
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: "gradle"
+
+      # Make gradlew executable if it lost its permissions
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build and test with Gradle
+        # test runs unit tests, check runs any configured linting (like checkstyle)
+        run: ./gradlew build check
+
+  # ── 3. Frontend (Next.js) ───────────────────────────────────────────────────
+  frontend-check:
+    name: Check Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: ./frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint Next.js
+        run: npm run lint
+
+      # Building in Next.js also runs the TypeScript compiler
+      - name: Type check (Build)
+        run: npm run build
+        # We don't have the orchestrator URL here during CI, but Next.js
+        # build still runs successfully because it's just proxy config.
