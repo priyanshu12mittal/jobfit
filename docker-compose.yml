@@ -19,7 +19,7 @@ services:
 
   # ── PostgreSQL ──────────────────────────────────────────────────────────────
   postgres:
-    image: postgres:16-alpine           # official, lightweight Postgres image
+    image: pgvector/pgvector:pg16       # using pgvector for AI embeddings
     container_name: jobfit-postgres
     restart: unless-stopped
     environment:
@@ -28,6 +28,7 @@ services:
       POSTGRES_PASSWORD: jobfit_secret  # override in production!
     volumes:
       - postgres-data:/var/lib/postgresql/data  # persist DB across restarts
+      - ./postgres-init:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"   # expose so you can still connect with psql / TablePlus
     healthcheck:
