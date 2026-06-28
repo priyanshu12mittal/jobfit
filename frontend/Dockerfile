@@ -5,7 +5,7 @@ WORKDIR /app
 
 # Copy package files first for layer caching
 COPY package.json package-lock.json ./
-RUN npm ci --frozen-lockfile
+RUN npm install
 
 # ── Stage 2: Build the Next.js app ────────────────────────────────────────────
 FROM node:20-alpine AS builder
