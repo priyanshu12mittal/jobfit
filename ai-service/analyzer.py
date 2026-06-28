@@ -6,7 +6,6 @@ from google.genai import types
 
 from llm import gemini_client
 from models import AnalysisResult
-from prompts import ANALYZE_PROMPT
 
 logger = logging.getLogger(__name__)
 
