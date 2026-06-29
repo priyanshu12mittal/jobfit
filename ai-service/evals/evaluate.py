@@ -3,14 +3,12 @@ import logging
 import os
 import sys
 
-from google import genai
 from google.genai import types
 
 # Add parent directory to path so we can import modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from embeddings import generate_embeddings
-from prompts import ANALYZE_PROMPT
 from analyzer import call_gemini
 from llm import gemini_client
 
@@ -87,9 +85,8 @@ def run_evaluations():
     logger.info(f"Loaded {len(chunks)} chunks and {len(cases)} cases.")
     
     
-    # 1. Embed all chunks and build full resume text
+    # 1. Embed all chunks
     chunk_texts = [c["text"] for c in chunks]
-    full_resume_text = "\n\n".join(chunk_texts)
     chunk_embeddings = generate_embeddings(chunk_texts)
     
     for idx, c in enumerate(chunks):
