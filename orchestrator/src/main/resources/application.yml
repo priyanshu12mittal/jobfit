@@ -11,5 +11,8 @@ spring:
       ddl-auto: update
     open-in-view: false
 
+app:
+  api-key: ${APP_API_KEY:}
+
 ai-service:
   base-url: ${AI_SERVICE_URL:http://localhost:8000}
