@@ -31,8 +31,11 @@ FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup && chown -R appuser:appgroup /app
+USER appuser
+
 # Copy only the compiled JAR from the builder stage
-COPY --from=builder /app/build/libs/*.jar app.jar
+COPY --from=builder --chown=appuser:appgroup /app/build/libs/*.jar app.jar
 
 # Port the Spring Boot app listens on
 EXPOSE 8081

@@ -29,13 +29,12 @@ COPY --from=builder /install /usr/local
 # Copy our application source code
 COPY . .
 
-# Tell Docker this container will listen on port 8000
+RUN useradd -m -r -s /bin/false appuser && chown -R appuser:appuser /app
+USER appuser
+
 EXPOSE 8000
 
-# The GOOGLE_API_KEY will be injected at runtime via docker-compose env vars.
-# We do NOT bake secrets into the image.
+# The GEMINI_API_KEY will be injected at runtime via docker-compose env vars.
 ENV PYTHONUNBUFFERED=1
 
-# Start Uvicorn — same as running it locally, but bound to 0.0.0.0 so
-# Docker can route external traffic into the container.
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
