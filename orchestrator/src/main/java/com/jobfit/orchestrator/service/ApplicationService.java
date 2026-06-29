@@ -51,14 +51,14 @@ public class ApplicationService {
         return applicationRepository.findByUserIdOrderByCreatedAtDesc(userId);
     }
 
-    public Application getById(Long id) {
-        return applicationRepository.findById(id)
+    public Application getById(Long id, Long userId) {
+        return applicationRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new IllegalArgumentException("Application not found: " + id));
     }
 
     @Transactional
-    public Application update(Long id, UpdateApplicationRequest req) {
-        Application app = getById(id);
+    public Application update(Long id,Long userId, UpdateApplicationRequest req) {
+        Application app = getById(id, userId);
 
         if (req.company() != null) app.setCompany(req.company());
         if (req.role() != null) app.setRole(req.role());

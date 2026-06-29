@@ -41,20 +41,21 @@ public class ApplicationController {
     }
 
     @GetMapping("/{id}")
-    public ApplicationResponse get(@PathVariable Long id) {
-        return ApplicationResponse.from(service.getById(id));
+    public ApplicationResponse get(@RequestHeader("X-User-Id") Long userId, @PathVariable Long id) {
+        return ApplicationResponse.from(service.getById(id, userId));
     }
 
     @PatchMapping("/{id}")
     public ApplicationResponse update(
+            @RequestHeader("X-User-Id") Long userId,
             @PathVariable Long id,
             @Valid @RequestBody UpdateApplicationRequest request
     ) {
-        return ApplicationResponse.from(service.update(id, request));
+        return ApplicationResponse.from(service.update(id,userId, request));
     }
 
     @PostMapping("/{id}/analyze")
-    public AnalyzeResponse analyze(@PathVariable Long id) {
-        return analyzeService.analyzeApplication(id);
+    public AnalyzeResponse analyze(@RequestHeader("X-User-Id") Long userId,@PathVariable Long id) {
+        return analyzeService.analyzeApplication(id, userId);
     }
 }

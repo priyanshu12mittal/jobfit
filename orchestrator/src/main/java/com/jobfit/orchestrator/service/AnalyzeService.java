@@ -48,8 +48,8 @@ public class AnalyzeService {
     }
 
     @Transactional
-    public AnalyzeResponse analyzeApplication(Long applicationId) {
-        Application app = applicationRepo.findById(applicationId)
+    public AnalyzeResponse analyzeApplication(Long applicationId, Long userId) {
+        Application app = applicationRepo.findByIdAndUserId(applicationId, userId)
                 .orElseThrow(() -> new IllegalArgumentException("Application not found: " + applicationId));
 
         if (app.getResumeText() == null || app.getJdText() == null) {
