@@ -27,7 +27,7 @@ public class ResumeVectorService {
     private final AppUserRepository userRepository;
     private final RestTemplate restTemplate;
 
-    @Value("${ai.service.url:http://ai-service:8000}")
+    @Value("${ai-service.base-url}")
     private String aiServiceUrl;
 
     public ResumeVectorService(ResumeChunkRepository chunkRepository, AppUserRepository userRepository) {
