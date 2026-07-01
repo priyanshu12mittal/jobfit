@@ -85,7 +85,10 @@ export default function Dashboard() {
   const handleAnalyze = async (app: Application) => {
     setAnalyzingIds(prev => new Set(prev).add(app.id));
     try {
-      const r = await fetch(`/api/applications/${app.id}/analyze`, { method: 'POST' });
+      const r = await fetch(`/api/applications/${app.id}/analyze`, { 
+        method: 'POST',
+        headers: { 'X-User-Id': USER_ID }
+      });
       if (!r.ok) throw new Error('Analysis failed');
       const updated: Application = await r.json();
       startTransition(() => {
@@ -114,7 +117,10 @@ export default function Dashboard() {
       if (!createRes.ok) throw new Error('Failed to create application');
       const created: Application = await createRes.json();
 
-      const analyzeRes = await fetch(`/api/applications/${created.id}/analyze`, { method: 'POST' });
+      const analyzeRes = await fetch(`/api/applications/${created.id}/analyze`, { 
+        method: 'POST',
+        headers: { 'X-User-Id': USER_ID }
+      });
       if (!analyzeRes.ok) throw new Error('Analysis failed');
       const analyzed: Application = await analyzeRes.json();
 
